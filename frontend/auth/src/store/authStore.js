@@ -1,9 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/auth" : "/api/auth";
-
-axios.defaults.withCredentials = true;
+const API_URL = "http://localhost:3000/api/auth";
 
 export const useAuthStore = create((set) => ({
 	user: null,
@@ -19,7 +17,8 @@ export const useAuthStore = create((set) => ({
 			const response = await axios.post(`${API_URL}/signup`, { email, password, name });
 			set({ user: response.data.user, isAuthenticated: true, isLoading: false });
 		} catch (error) {
-			set({ error: error.response.data.message || "Error signing up", isLoading: false });
+			console.log(error)
+			set({ error: error.message || "Error signing up", isLoading: false });
 			throw error;
 		}
 	},
@@ -35,6 +34,7 @@ export const useAuthStore = create((set) => ({
 				isLoading: false,
 			});
 		} catch (error) {
+			console.log(error)
 			set({ error: error.response?.data?.message || "Error logging in", isLoading: false });
 			throw error;
 		}
@@ -78,7 +78,7 @@ export const useAuthStore = create((set) => ({
 		} catch (error) {
 			set({
 				isLoading: false,
-				error: error.response.data.message || "Error sending reset password email",
+				error: error.response?.data?.message || "Error sending reset password email",
 			});
 			throw error;
 		}

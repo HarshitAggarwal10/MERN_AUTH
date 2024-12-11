@@ -4,6 +4,10 @@ import { verifyToken } from '../middlewares/verifyToken.js';
 
 const router = express.Router();
 
+router.get("/", (req, res) => {
+    res.send("Hello from auth routes");
+});
+
 router.get("/check-auth", verifyToken, checkAuth);
 
 router.post("/signup", signup);
